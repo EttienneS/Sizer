@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sizer"
         mc:Ignorable="d"
-        Title="Sizer" Height="530" Width="570"
+        Title="Sizer" Height="550" Width="570"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid Background="#FF0E0C0C">
 
         <StackPanel Margin="5" HorizontalAlignment="Center">
             <Button Name="LoadButton" Content="Load"  VerticalAlignment="Top" HorizontalAlignment="Center" Click="Load_Click" />
             <StackPanel Orientation="Horizontal" Margin="5">
-                <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
+                <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Background="Gray">
                     <Image Name="OriginalImage" HorizontalAlignment="Left" Height="256"  VerticalAlignment="Top" Width="256"  />
                 </Border>
-                <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
+                <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Name="PreviewBorder" Background="Gray">
                     <Image Name="PreviewImage" HorizontalAlignment="Left" Height="256"  VerticalAlignment="Center" Width="256" Source="{Binding ConvertSample}" />
                 </Border>
             </StackPanel>
@@ -42,7 +42,10 @@
                     <TextBox x:Name="NewHeightTextBox" HorizontalAlignment="Left"  Margin="5" Height="23" Text="{Binding NewHeightValue}" TextWrapping="Wrap" VerticalAlignment="Center" Width="72" />
                     <Label Content="{Binding HeightRatio}" HorizontalAlignment="Left"  VerticalAlignment="Center" RenderTransformOrigin="2.392,0.556" Height="30" Width="83" />
                 </StackPanel>
-                <Button Name="SizeButton" Content="Resize" HorizontalAlignment="Center" VerticalAlignment="Top"  Click="Resize_Click"  />
+                <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <ComboBox Width="200" Name="ScaleComboBox" SelectionChanged="ScaleComboBox_ScaleModeChanged" Height="28"/>
+                    <Button Name="SizeButton" Content="Resize" Click="Resize_Click"  />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

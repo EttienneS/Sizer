@@ -1,4 +1,5 @@
 ﻿using ImageProcessor;
+using ImageProcessor.Imaging;
 using ImageProcessor.Imaging.Formats;
 using Microsoft.Win32;
 using System;
@@ -34,6 +35,14 @@ namespace Sizer
                  new StandardSize("Side Banner", 300, 300),
                  new StandardSize("Top Newsletter Banner", 468, 120)
             };
+
+            var modes = new List<ImageProcessor.Imaging.ResizeMode>();
+            foreach (ImageProcessor.Imaging.ResizeMode value in Enum.GetValues(typeof(ImageProcessor.Imaging.ResizeMode)))
+            {
+                modes.Add(value);
+            }
+            ScaleComboBox.ItemsSource = modes;
+            ScaleComboBox.SelectedItem = ImageProcessor.Imaging.ResizeMode.Stretch;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -115,6 +124,21 @@ namespace Sizer
             }
         }
 
+        private ImageProcessor.Imaging.ResizeMode _resizeMode = ImageProcessor.Imaging.ResizeMode.Stretch;
+
+        public ImageProcessor.Imaging.ResizeMode ResizeMode
+        {
+            get
+            {
+                return _resizeMode;
+            }
+            set
+            {
+                _resizeMode = value;
+                Changed(nameof(ConvertSample));
+            }
+        }
+
         public int OriginalHeight { get; set; } = 100;
         public int OriginalWidth { get; set; } = 100;
 
@@ -184,7 +208,7 @@ namespace Sizer
                     {
                         // Load, resize, set the format and quality and save an image.
                         imageFactory.Load(inStream)
-                                    .Resize(size)
+                                    .Resize(new ResizeLayer(size, ResizeMode))
                                     .Format(format)
                                     .Save(outStream);
                     }
@@ -206,6 +230,11 @@ namespace Sizer
             ForceAspectCheckbox.IsChecked = false;
             NewWidthValue = size.Width;
             NewHeightValue = size.Height;
+        }
+
+        private void ScaleComboBox_ScaleModeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ResizeMode = (ImageProcessor.Imaging.ResizeMode)ScaleComboBox.SelectedItem;
         }
     }
 
